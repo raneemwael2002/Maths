@@ -28,7 +28,7 @@ public:
 };
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Template!");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Back Easing");
     sf::CircleShape shape(20);
     shape.setOrigin(20, 20);
 
