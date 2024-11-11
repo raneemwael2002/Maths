@@ -3,7 +3,6 @@
 
 const float PI = 3.14159f;
 
-
 void updateArc(sf::ConvexShape& shape, const sf::Vector2f& center, float radius, float startAngle, float endAngle) {
     int pointsCount = shape.getPointCount();
     float startRad = startAngle * PI / 180;
@@ -22,7 +21,6 @@ void updateArc(sf::ConvexShape& shape, const sf::Vector2f& center, float radius,
     }
 }
 
-
 bool isArcTouchingCircle(const sf::ConvexShape& arc, const sf::CircleShape& circle) {
     sf::Vector2f circleCenter = circle.getPosition() + sf::Vector2f(circle.getRadius(), circle.getRadius());
     float radius = circle.getRadius();
@@ -40,10 +38,12 @@ bool isArcTouchingCircle(const sf::ConvexShape& arc, const sf::CircleShape& circ
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Arc Touch Detection");
 
+   
     sf::CircleShape circleA(20);
     circleA.setFillColor(sf::Color::Cyan);
     circleA.setPosition(240, 300);
 
+    
     sf::CircleShape circleB(10);
     circleB.setFillColor(sf::Color::Red);
     circleB.setPosition(400, 300);  
@@ -52,9 +52,13 @@ int main() {
     sf::ConvexShape arc(30);
     arc.setFillColor(sf::Color::Green);
 
-    float fovRadius = 150.f;
-    float fovAngle = 90.f;   
+  
+    float fovRadius = 150.f;  
+    float fovAngle = 90.f;    
     float rotationAngle = 0.f;
+
+    
+    float speed = 1.0f;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -63,7 +67,21 @@ int main() {
                 window.close();
         }
 
+        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+            circleB.move(0, -speed);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+            circleB.move(0, speed);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+            circleB.move(-speed, 0);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+            circleB.move(speed, 0);
+        }
 
+        
         sf::Vector2f bPos = circleB.getPosition() + sf::Vector2f(circleB.getRadius(), circleB.getRadius()); 
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
         rotationAngle = std::atan2(mousePos.y - bPos.y, mousePos.x - bPos.x) * 180 / PI;
@@ -71,7 +89,6 @@ int main() {
         
         updateArc(arc, bPos, fovRadius, rotationAngle - fovAngle / 2, rotationAngle + fovAngle / 2);
 
-        
         if (isArcTouchingCircle(arc, circleA)) {
             arc.setFillColor(sf::Color::Yellow);  
         }
@@ -84,9 +101,10 @@ int main() {
         window.draw(circleA);
         window.draw(arc);
         window.draw(circleB);
-        
+
         window.display();
     }
 
     return 0;
 }
+
